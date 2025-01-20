@@ -2,14 +2,13 @@ package com.example.catalog.domain;
 
 import com.example.catalog.ApplicationProperties;
 import com.example.catalog.web.response.AppResponse;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional
@@ -23,12 +22,10 @@ public class ProductService {
         this.applicationProperties = applicationProperties;
     }
 
-
-    public AppResponse<List<Product>> getProducts(int pageNo){
+    public AppResponse<List<Product>> getProducts(int pageNo) {
         Sort sort = Sort.by("name").ascending();
-        Pageable pageable = PageRequest.of(pageNo<=1?0:pageNo-1, applicationProperties.pageSize(), sort);
+        Pageable pageable = PageRequest.of(pageNo <= 1 ? 0 : pageNo - 1, applicationProperties.pageSize(), sort);
         Page<Product> all = productRepository.findAll(pageable).map(ProductMapper::toProduct);
-        return AppResponse.fromPage(all,"Items Fetched Successfully");
+        return AppResponse.fromPage(all, "Items Fetched Successfully");
     }
-
 }

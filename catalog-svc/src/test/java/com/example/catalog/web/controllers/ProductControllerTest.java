@@ -1,20 +1,20 @@
 package com.example.catalog.web.controllers;
 
-import com.example.catalog.AbstractIT;
-import io.restassured.http.ContentType;
-import org.junit.jupiter.api.Test;
-import org.springframework.test.context.jdbc.Sql;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
+import com.example.catalog.AbstractIT;
+import io.restassured.http.ContentType;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.context.jdbc.Sql;
+
 @Sql("/test-data.sql")
 class ProductControllerTest extends AbstractIT {
 
     @Test
-    void shouldReturnProducts(){
+    void shouldReturnProducts() {
         given().contentType(ContentType.JSON)
                 .when()
                 .get("/api/products")
@@ -28,6 +28,5 @@ class ProductControllerTest extends AbstractIT {
                 .body("meta.hasNext", equalTo(true)) // Verify there's a next page
                 .body("message", equalTo("Items Fetched Successfully")) // Verify the response message
                 .body("timestamp", notNullValue());
-
     }
 }

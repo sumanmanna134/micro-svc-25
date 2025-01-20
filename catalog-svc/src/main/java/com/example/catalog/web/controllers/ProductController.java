@@ -16,9 +16,8 @@ class ProductController {
         this.productService = productService;
     }
 
-
     @GetMapping
-    public AppResponse<?> getProducts(@RequestParam(name = "page", defaultValue = "1") int pageNo){
+    public AppResponse<?> getProducts(@RequestParam(name = "page", defaultValue = "1") int pageNo) {
         return productService.getProducts(pageNo);
     }
 }
