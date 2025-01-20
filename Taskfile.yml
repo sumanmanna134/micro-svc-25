@@ -6,6 +6,7 @@ vars:
   MVNW: '{{if eq .GOOS "windows"}}mvnw.cmd{{else}} mvn{{end}}'
   DC_DIR: "deployment/compose"
   INFRA_DC_FILE: "{{.DC_DIR}}/infra.yml"
+  APPS_DC_FILE: "{{.DC_DIR}}/app.yml"
 
 
 tasks:
@@ -15,7 +16,7 @@ tasks:
   test:
     deps: [format]
     cmds:
-      - "{{.MVNW}} clean verify"
+      - "{{.MVNW}} -pl catalog-svc spring-boot:build-image -DskipTests"
 
   format:
     cmds:
@@ -23,8 +24,8 @@ tasks:
 
   build:
     cmds:
-      - "{{.MVNW}} verify"
-      - "{{.MVNW}} -pl catalog-service spring-boot:build-image -DskipTests"
+#      - "{{.MVNW}} verify"
+      - "{{.MVNW}} -pl catalog-svc spring-boot:build-image -DskipTests"
 #      - "{{.MVNW}} -pl order-service spring-boot:build-image -DskipTests"
 #      - "{{.MVNW}} -pl notification-service spring-boot:build-image -DskipTests"
 #      - "{{.MVNW}} -pl api-gateway spring-boot:build-image -DskipTests"

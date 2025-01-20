@@ -27,4 +27,19 @@ public class ProductRepositoryTest {
         List<ProductEntity> products = productRepository.findAll();
         assertThat(products).hasSize(15);
     }
+
+    @Test
+    public void shouldGetProductByCode() {
+        ProductEntity productEntity = productRepository.findByCode("P100").orElseThrow();
+        assertThat(productEntity.getCode()).isEqualTo("P100");
+        assertThat(productEntity.getName()).isEqualTo("The Hunger Games");
+        assertThat(productEntity.getDescription())
+                .isEqualTo("Winning will make you famous. Losing means certain death...");
+        assertThat(productEntity.getPrice()).isEqualTo("34.0");
+    }
+
+    @Test
+    public void shouldReturnEmptyWhenProductNotExists() {
+        assertThat(productRepository.findByCode("invalid_code")).isEmpty();
+    }
 }

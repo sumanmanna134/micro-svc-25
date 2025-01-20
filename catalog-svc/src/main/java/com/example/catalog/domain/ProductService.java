@@ -1,6 +1,7 @@
 package com.example.catalog.domain;
 
 import com.example.catalog.ApplicationProperties;
+import com.example.catalog.exception.ProductNotFoundException;
 import com.example.catalog.web.response.AppResponse;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -27,5 +28,15 @@ public class ProductService {
         Pageable pageable = PageRequest.of(pageNo <= 1 ? 0 : pageNo - 1, applicationProperties.pageSize(), sort);
         Page<Product> all = productRepository.findAll(pageable).map(ProductMapper::toProduct);
         return AppResponse.fromPage(all, "Items Fetched Successfully");
+    }
+
+    public AppResponse<?> getProductByCode(String code) {
+        return AppResponse.builder()
+                .data(productRepository
+                        .findByCode(code)
+                        .map(ProductMapper::toProduct)
+                        .orElseThrow(() -> ProductNotFoundException.forCode(code)))
+                .message("Product fetched Successfully")
+                .build();
     }
 }
