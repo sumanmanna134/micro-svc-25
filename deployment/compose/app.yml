@@ -1,0 +1,22 @@
+name: 'spring-boot-microservice'
+services:
+  catalog-service:
+    image: mannasuman134/bookstore-catalog-svc
+    container_name: catalog-svc
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=dev@example.com
+      - PGADMIN_DEFAULT_PASSWORD=dev@123
+      - DB_USERNAME=user@12
+      - DB_PASSWORD=password@12
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_URL=jdbc:postgresql://catalog-db:5432/dev
+    ports:
+      - '8081:9001'
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 700m
